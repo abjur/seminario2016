@@ -1,0 +1,91 @@
+---
+layout: default
+---
+<div class="row">
+  <div id="myArticle" class="col-sm-9">
+    <div class="post-area post">
+      <article>
+        {{content}}
+      </article>
+    </div>
+  </div>
+</div>
+<p><br/></p>
+<div id="index" class="row">
+  <div class="col-sm-9">
+    <div class="post-area ">
+      <div class="post-list-body">
+        <div class="all-posts" post-cate="All">
+          {% for post in site.posts reversed %}
+          {% unless post.tags contains "exercicio" %}
+          {% unless post.tags contains "lab" %}
+          {% unless post.tags contains "slides" %}
+          {% unless post.tags contains "" %}
+          {% if post.tags contains "aula" %}
+            <a class="post-list-item" href="{{ post.url | prepend: site.baseurl }}">
+              <h2>
+              {{ post.title }}
+              </h2>
+              <span class="">{{ post.date | date: "%b %-d, %Y" }}</span>
+            </a>
+          {% endif %}
+          {% endunless %}
+          {% endunless %}
+          {% endunless %}
+          {% endunless %}
+          {% endfor %}
+        </div>
+        <!-- <div class="posts-in-categories"> -->
+        {% for category in site.categories %}
+          
+          <div post-cate="{{category | first}}">
+            {% for posts in category  %}
+              {% for post in posts %}
+              
+                {% unless post.tags contains "exercicio" %}
+                {% unless post.tags contains "lab" %}
+                {% unless post.tags contains "slides" %}
+              
+                {% if post.url %}
+                  <a href="{{ post.url }}" class="post-list-item">
+                    <h2>
+                    {{ post.title }}
+                    </h2>
+                    <span class="">{{ post.date | date: "%b %-d, %Y" }}</span>
+                  </a>
+                {% endif %}
+              {% endunless %}
+              {% endunless %}
+              {% endunless %}
+              
+              {% endfor %}
+            {% endfor %}
+          </div>
+        {% endfor %}
+        <!-- </div> -->
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-3">
+    <div class="shadow-corner-curl hidden-xs">
+      <div class="categories-list-header">
+        Categories
+      </div>
+      
+      <a href="javascript:;" class="categories-list-item" cate="All">
+        All<span class="my-badge"> {{site.categories | size}}</span>
+      </a>
+      {% for category in site.categories %}
+        {% unless category contains "exercicio" %}
+        {% unless category contains "lab" %}
+        {% unless category contains "slides" %}
+        <a href="javascript:;" class="categories-list-item" cate="{{ category | first }}">
+          {{ category | first }} <span class="my-badge">{{ category | last | size }}</span>
+        </a>
+        {% endunless %}
+        {% endunless %}
+        {% endunless %}
+      {% endfor %}
+    </div>
+  </div>
+</div>

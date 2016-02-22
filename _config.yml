@@ -1,0 +1,31 @@
+# Site settings
+title: "VI Seminário de Jurimetria - 2016"
+email: abj@abjur.org.br
+description: Projeto de análise de dados
+# > # this means to ignore newlines until "baseurl:"
+
+baseurl: "/seminario2016" # the subpath of your site, e.g. /blog/
+url: "http://abjur.github.io" # the base hostname & protocol for your site
+# twitter_username: jekyllrb
+github_username: abjur
+permalink: /:title/
+
+#########################################
+# for duoshuo.com commenting system, uncomment following line if you do not want to include duoshuo.com. 
+#duoshuo_shortname: lixizhi
+#duoshuo_url: "http://lixizhi.github.io"
+# disqus.com commenting system. please note that it is exclusive with duoshuo.com
+disqus_shortname: abjur
+disqus_url: "http://abjur.github.io"
+#########################################
+
+# Build settings
+markdown: kramdown
+mathjax: true
+
+categories: post
+
+# highlight
+# highlighter: pygments
+# highlighter: rouge
+# highlighter: false
