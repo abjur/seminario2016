@@ -5,8 +5,8 @@
     <description>Projeto de análise de dados</description>
     <link>http://abjur.github.io/seminario2016/</link>
     <atom:link href="http://abjur.github.io/seminario2016/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 04 Mar 2016 12:19:04 -0300</pubDate>
-    <lastBuildDate>Fri, 04 Mar 2016 12:19:04 -0300</lastBuildDate>
+    <pubDate>Fri, 04 Mar 2016 12:26:50 -0300</pubDate>
+    <lastBuildDate>Fri, 04 Mar 2016 12:26:50 -0300</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
@@ -1102,9 +1102,7 @@ d_cpopg &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; parse_cpopg&lt;sp
     
       <item>
         <title>Download e documentação dos dados</title>
-        <description>&lt;h1 id=&quot;introduo&quot;&gt;Introdução&lt;/h1&gt;
-
-&lt;p&gt;A base de dados disponibilizada tem origem na Consulta de Processos de Primeiro
+        <description>&lt;p&gt;A base de dados disponibilizada tem origem na Consulta de Processos de Primeiro
 Grau (CJPG) do Tribunal de Justiça de São Paulo.&lt;/p&gt;
 
 &lt;h1 id=&quot;downloads&quot;&gt;Downloads&lt;/h1&gt;
@@ -1145,7 +1143,7 @@ São 20 variáveis na base &lt;code&gt;dados&lt;/code&gt; e 21 variáveis na bas
 &lt;h2 id=&quot;outros-formatos&quot;&gt;Outros formatos&lt;/h2&gt;
 
 &lt;p&gt;Também é possível baixar a base de dados nos formatos &lt;code&gt;.rds&lt;/code&gt; ou &lt;code&gt;.rda&lt;/code&gt;, que são
-adequados para trabalhar no R. Também disponibilizamos a base de dados sem sentenças
+adequados para trabalhar no software estatístico R. Também disponibilizamos a base de dados sem sentenças
 em &lt;code&gt;.csv&lt;/code&gt;. Os arquivos estão &lt;a href=&quot;https://www.dropbox.com/sh/yci3146prtkdh39/AAB7YjAyIdAQn6m8Mjlp7OQaa?dl=0&quot;&gt;nesta pasta&lt;/a&gt;.&lt;/p&gt;
 
 </description>
