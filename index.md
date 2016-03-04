@@ -17,3 +17,16 @@ Os tipos de análise que são possíveis neste de banco de dados são das mais v
  
 - Estudar funções de perda que se adequem às aspirações dos autores e usá-las para determinar estratégias judiciais ótimas. Por exemplo, determinar em quais circunstâncias é melhor para o autor abrir o processo na Justiça Comum ou nos Juizados Especiais Cíveis.
 
+Acesse a descrição completa do projeto [aqui](http://abj.org.br)
+
+
+
+
+
+
+
+
+
+
+
+
