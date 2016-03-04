@@ -17,3 +17,11 @@ A ABJ busca contribuir para o aperfeiçoamento da sociedade brasileira através 
 
 3. Colaborar com entidades públicas e privadas no esforço estratégico de aperfeiçoar os mecanismos de prestação jurisdicional e administração da justiça.
 
+<br />
+<br />
+<br />
+<div align="center">
+<a href="http://abj.org.br" target="_blank">
+<img src="../abj_logo_cut.png" width="80%"  />
+</a>
+</div>
