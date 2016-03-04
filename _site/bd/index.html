@@ -5,8 +5,8 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Projeto - base de dados</title>
-	<meta name="description" content="TODO">
+	<title>Download e documentação dos dados</title>
+	<meta name="description" content="Introdução">
 	
 	<link rel="canonical" href="http://abjur.github.io/seminario2016/bd/">
 	<link rel="alternate" type="application/rss+xml" title="VI Seminário de Jurimetria - 2016" href="http://abjur.github.io/seminario2016/feed.xml" />
@@ -106,12 +106,57 @@
   <div id="myArticle" class="col-sm-9">
     <div class="post-area post">
       <header>
-        <h1>Projeto - base de dados</h1>
+        <h1>Download e documentação dos dados</h1>
         <p>Feb 22, 2016</p>
       </header>
       <hr>
       <article>
-        <h2 id="todo">TODO</h2>
+        <h1 id="introduo">Introdução</h1>
+
+<p>A base de dados disponibilizada tem origem na Consulta de Processos de Primeiro
+Grau (CJPG) do Tribunal de Justiça de São Paulo.</p>
+
+<h1 id="downloads">Downloads</h1>
+
+<ul>
+  <li><a href="https://www.dropbox.com/s/d3wrhrbewyb0tjl/dados.xlsx?dl=0">Dados estruturados <strong>sem</strong> sentenças</a></li>
+  <li><a href="">Dados estruturados <strong>com</strong> sentenças</a></li>
+</ul>
+
+<h2 id="sobre-os-dados">Sobre os dados</h2>
+
+<p>A base de dados contém 19.078 processos. 
+São 20 variáveis na base <code>dados</code> e 21 variáveis na base <code>dados_txt</code>.</p>
+
+<ul>
+  <li><code>n_processo</code>: Número do processo.</li>
+  <li><code>cod_sentenca</code>: Código interno da sentença.</li>
+  <li><code>foro</code>: Nome do foro.</li>
+  <li><code>vara</code>: Nome da vara.</li>
+  <li><code>magistrado</code>: Nome do magistrado que proferiu a sentença.</li>
+  <li><code>digital</code>: Identifica se o processo é digital (processo eletrônico) ou não.</li>
+  <li><code>tipo_vara</code>: Tipo de vara (vara cível, JEC com advogado, JEC sem advogado).</li>
+  <li><code>data_disponibilizacao</code>: Data de disponibilização da sentença.</li>
+  <li><code>adv_reu</code>: Identifica se o autor da ação tem advogado ou não.</li>
+  <li><code>empresa</code>: Empresa envolvida como ré da ação.</li>
+  <li><code>tipo_dano</code>: Tipo de dano (dano material, moral ou ambos).</li>
+  <li><code>resultado</code>: Resultado do processo (acordo, procedente, improcedente, parcialmente procedente).</li>
+  <li><code>valor_acao</code>: Valor da ação, em salários mínimos.</li>
+  <li><code>resultado_vl</code>: Valor do resultado (valor de condenação ou do acordo), em salários mínimos.</li>
+  <li><code>tempo</code>: Tempo do processo desde a distribuição até a sentença, em anos.</li>
+  <li><code>serasa</code>: Indicador de presença de discussões a respeito dos órgãos de proteção ao crédito.</li>
+  <li><code>terceiro</code>: Identifica se aparece a palavra “terceiro” na sentença.</li>
+  <li><code>consumo</code>: Indicador de presença de discussões a respeito de relação de consumo.</li>
+  <li><code>gratuidade</code>: Indicador de presença de discussões a respeito de gratuidade judiciária.</li>
+  <li><code>txt</code>: Texto da sentença completo. Somente na base <code>dados_txt</code>.</li>
+</ul>
+
+<h2 id="outros-formatos">Outros formatos</h2>
+
+<p>Também é possível baixar a base de dados nos formatos <code>.rds</code> ou <code>.rda</code>, que são
+adequados para trabalhar no R. Também disponibilizamos a base de dados sem sentenças
+em <code>.csv</code>. Os arquivos estão <a href="https://www.dropbox.com/sh/yci3146prtkdh39/AAB7YjAyIdAQn6m8Mjlp7OQaa?dl=0">nesta pasta</a>.</p>
+
 
       </article>
       

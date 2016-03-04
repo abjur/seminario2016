@@ -1,0 +1,192 @@
+---
+title: "Download e estruturação dos dados do TJSP"
+date: 2016-02-22
+layout: post
+comments: true
+tags: aula
+---
+
+## Download de dados do TJSP
+
+Este documento mostra como baixar os dados do site do TJSP.
+Para os códigos que seguem, vamos assumir que a pasta onde serão
+armazenados e processados todos os dados é `data-raw`.
+
+Os dados presentes nesse arquivo contêm sentenças registradas em 2014 e 2015.
+Essa é uma diferença importante em relação aos dados consolidados. Ou seja, 
+pesquisadores interessados em analisar as bases mais cruas terão a oportunidade
+de trabalhar com mais processos.
+
+### Pacotes utilizados
+
+```{r message=FALSE, warning=FALSE}
+library(tjsp)
+library(esaj)
+library(dplyr)
+library(multidplyr)
+library(stringr)
+library(lubridate)
+```
+
+### Escopo da pesquisa
+
+Na CJPG, foi realizada uma pesquisa com as seguintes especificações:
+
+- **Varas**: Apenas varas cíveis na comarca de São Paulo
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+library(dplyr)
+library(tjsp)
+library(stringr)
+varas <- list_varas_1inst()
+varas_interesse <- varas %>%
+  filter(str_detect(nm_muni, 'PAULO'),
+         str_detect(nm_vara, 'vel|Especial|Iti'),
+         !str_detect(nm_vara, 'Crim|Juv|Fam|Faz')) %>% 
+  select(nm_muni, nm_foro, nm_vara, cod_vara)
+knitr::kable(varas_interesse)
+```
+
+- **Classes**: Procedimento Ordinário, Procedimento Sumário e Procedimento do
+Juizado Especial Cível.
+
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+classes <- list_classes_1inst()
+classes_interesse <- classes %>%
+  filter(str_detect(nm_leaf, 'Procedimento [OSd]'),
+         !str_detect(nm_leaf, 'Penal|Criminal'),
+         is.na(n0)) %>% 
+  mutate(classe_pai = paste(n1, n2, n3, sep = ' / ')) %>% 
+  select(classe_pai, classe = nm_leaf, cod = cod_leaf)
+knitr::kable(classes_interesse)
+```
+
+- Intervalo de tempo: Sentenças disponibilizadas entre 01/01/2014 e 31/12/2015.
+
+Os dados foram consultados de mês em mês para tornar a busca mais rápida.
+Os arquivos HTML correspondem às páginas de resultados da pesquisa para cada mês.
+Cada página contém 15 sentenças. No entanto, as páginas caminham de dez em dez
+sentenças e, por isso, temos 5 repetições por página.
+
+## Download e parse dos arquivos HTML
+
+Os arquivos HTML foram baixados diretamente dos sites dos tribunais e 
+armazenados no Dropbox. Os arquivos vêm de duas origens: a
+[consulta de julgados de primeiro grau (CJPG)](https://esaj.tjsp.jus.br/cjpg/) e a
+[consulta de processos de primeiro grau (CPO-PG)](https://esaj.tjsp.jus.br/cpopg/open.do).
+
+### Download CJPG
+
+Pesquisa realizada em 23/02/2016.
+Datas entre 01/01/2014 e 31/12/2015.
+Quebramos as pesquisas por mês para tornar o algoritmo mais rápido, pois
+o site do TJSP fica lento ao acessar páginas com índices > 1000.
+A pesquisa demorou aproximadamente 8 horas.
+
+```{r eval=FALSE}
+d0 <- as.Date('2014-01-01') + months(0:23)
+d1 <- as.Date('2014-01-01') + months(1:24) - 1
+cjpg_l <- list()
+for(i in seq_along(d0)) {
+  nm <- format(d0[i], '%Y%m')
+  p <- sprintf('data-raw/cjpg/%s', nm)
+  suppressWarnings(dir.create(p))
+  # Essa é a fç que baixa os dados
+  cjpg_l[[nm]] <- cjpg(classes = cl, varas = va, 
+                       datas = c(d0[i], d1[i]), path = p)
+  cjpg_l[[nm]]$yearmon <- nm
+}
+
+# Salvando log dos resultados da cjpg.
+cjpg_res <- dplyr::bind_rows(cjpg_l)
+saveRDS(cjpg_res, 'data-raw/cjpg_res.rds')
+```
+
+Os arquivos HTML estão disponíveis [nesse link](https://www.dropbox.com/s/6i4om1790ncnkj4/cjpg.zip?dl=0).
+
+### Parse CJPG
+
+A leitura dos arquivos demora aproximadamente uma hora.
+
+```{r eval=FALSE}
+# Carregando os nomes dos arquivos a partir das pastas
+# O código é um pouco complicado pois estamos pegando
+# arquivos de várias pastas.
+d_cjpg <- sprintf('data-raw/cjpg', normalizePath(path)) %>% 
+  dir(full.names = TRUE) %>% 
+  {data_frame(pasta = .)} %>% 
+  group_by(pasta) %>% 
+  do(data_frame(arq = dir(.$pasta, full.names = TRUE))) %>% 
+  ungroup() %>% 
+  mutate(pasta = str_extract(pasta, '[0-9]+$')) %>% 
+  group_by(pasta, arq) %>% 
+  # aqui aplicamos o parser aos arquivos
+  do(parse_cjpg_pag(.$arq)) %>% 
+  ungroup() %>% 
+  distinct(cod_sentenca)
+
+# Salvando d_cjpg.rds
+saveRDS(d_cjpg, 'data-raw/d_cjpg.rds')
+```
+
+O resultado do download, após estruturação, também está disponível para download
+[nesse link](https://www.dropbox.com/s/7tacun9dwnngt9x/d_cjpg.rds?dl=0). O arquivo pode ser lido usando a função `readRDS` do `R`:
+
+```{r eval=FALSE}
+d_cpopg <- readRDS('data-raw/d_cpopg.rds')
+```
+
+### CPO-PG
+
+A Consulta de Processos de Primeiro Grau permite obter dados adicionais
+dos processos, como partes, valor da causa e andamentos. A pesquisa é realizada
+a partir de um número de processo. Para essa tarefa, utilizamos os processos
+obtidos na CJPG do passo anterior.
+
+A pesquisa foi realizada em 25/02/2016.
+Utilizamos processamento paralelo para aumentar quantidade de acessos.
+A pesquisa demorou aproximadamente dois dias 
+utilizando quatro núcleos de processamento.
+
+```{r eval=FALSE}
+# Processos que queremos baixar
+p <- unique(d_cjpg$n_processo)
+
+dir.create('data-raw/cpo-pg')
+d_cpopg_res <- cpo_pg(p, path = 'data-raw/cpo-pg')
+
+# Salvando log dos resultados da cpopg.
+saveRDS(d_cpopg_res, 'data-raw/d_cpopg_res.rds')
+```
+
+#### Download
+
+Faça o download do arquivo compactado com os arquivos HTML [aqui](https://www.dropbox.com/s/613ojiswhgugqxd/cpopg.zip?dl=0) (7.1gb).
+
+### Parse CPO-PG
+
+A leitura dos arquivos demora aproximadamente doze horas,
+utilizando quatro núcleos de processamento.
+
+```{r eval=FALSE}
+# Carrega os caminhos dos arquivos baixados
+arqs <- dir('data-raw/cpo-pg', full.names = TRUE)
+# Utiliza processamento paralelo
+d_cpopg <- parse_cpopg(arqs)
+# Salvando d_cpopg.rds
+saveRDS(d_cpopg, 'data-raw/d_cpopg.rds')
+```
+
+O resultado do download, após estruturação, também está disponível para download
+[nesse link](https://www.dropbox.com/s/s83sn77whakhidv/d_cpopg.rds?dl=0). O arquivo pode ser lido usando a função `readRDS` do `R`:
+
+```{r eval=FALSE}
+d_cpopg <- readRDS('data-raw/d_cpopg.rds')
+```
+
+### Contato
+
+Se tiver dúvidas de como trabalhar com os dados, envie um e-mail para
+[jtrecenti@abjur.org.br](mailto:jtrecenti@abjur.org.br).
+

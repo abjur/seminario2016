@@ -3,7 +3,7 @@ layout: frontpage
 ---
 
 
-## VI Seminário de Jurimetria
+## Primeira Maratona de Jurimetria
 
-Dados do projeto.
+Descrição descrição descrição...
 
